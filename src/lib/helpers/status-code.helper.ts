@@ -9,6 +9,10 @@ export const handleStatusCode = (message: string) => {
     case ERRORS.INVALID_PASSWORD:
     case ERRORS.MISSING_FIELDS:
       return 400;
+    case ERRORS.INCORRECT_CREDENTIALS:
+      return 401;
+    case ERRORS.USER_NOT_FOUND:
+      return 404;
     case ERRORS.USER_EXISTS:
       return 409;
     case ERRORS.ERROR_REGISTERING_USER:

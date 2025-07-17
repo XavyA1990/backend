@@ -25,4 +25,14 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+export const parserUser = (user: IUser) => {
+  return {
+    email: user.email,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    created_at: user.created_at,
+    avatar_image_url: user.avatar_image_url,
+  };
+};
+
 export default User;

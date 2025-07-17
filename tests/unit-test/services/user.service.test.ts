@@ -1,5 +1,5 @@
 import { generateUser } from "../../data/mock-helper";
-import {getUserByEmail, registerUser} from "../../../src/services/users.service";
+import {getUserByEmail, loginUser, registerUser} from "../../../src/services/users.service";
 import { IUser } from "../../../src/models/user.model";
 import { ERRORS } from "../../../src/lib/constants/labels";
 
@@ -42,3 +42,26 @@ describe("User Service - registerUser", () => {
         expect(foundUser!.email).toBe(userData.email);
     })
 })
+
+describe("User Service - loginUser", () => {
+    it("should login a user with valid credentials", async () => {
+        const userData = generateUser();
+        await registerUser(userData as Omit<IUser, '_id'>);
+        const result = await loginUser(userData.email, userData.password);
+        expect(result.data.user).toHaveProperty("_id");
+        expect(result.data.user.first_name).toBe(userData.first_name);
+        expect(result.data.user.last_name).toBe(userData.last_name);
+        expect(result.data.user.email).toBe(userData.email);
+        expect(result.data.token).toBeDefined();
+    })
+
+    it("should throw an error for invalid email", async () => {
+        await expect(loginUser("invalid@example.com", generateUser().password)).rejects.toThrow(ERRORS.USER_NOT_FOUND);
+    })
+
+    it("should throw an error for invalid password", async () => {
+        const userData = generateUser();
+        await registerUser(userData as Omit<IUser, '_id'>);
+        await expect(loginUser(userData.email, "wrongpassword")).rejects.toThrow(ERRORS.INVALID_PASSWORD);
+    })
+});

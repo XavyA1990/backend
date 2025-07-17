@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { IUser } from "../models/user.model";
-import { registerUser } from "../services/users.service";
+import { loginUser, registerUser } from "../services/users.service";
 import { SUCCESS } from "../lib/constants/labels";
 import { useLogger } from "../config/plugins/logger.plugin";
 import { handleStatusCode } from "../lib/helpers/status-code.helper";
@@ -32,6 +32,30 @@ const register = (req: Request, res: Response) => {
     });
 };
 
+const login = (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  loginUser(email, password)
+    .then((result) => {
+      useLogger(
+        `User logged in successfully: ${result.data.user.email}`,
+        "info"
+      );
+      res.status(200).json({ data: result.data });
+    })
+    .catch((error) => {
+      if (error instanceof Error) {
+        useLogger(`Error logging in user: ${error.message}`, "error");
+        return res
+          .status(handleStatusCode(error.message))
+          .json({ error: error.message });
+      }
+      useLogger("Unknown error during user login", "error");
+      res.status(500).json({ error: "Unknown error" });
+    });
+};
+
 export default {
   register,
+  login,
 };
