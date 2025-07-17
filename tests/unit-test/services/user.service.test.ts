@@ -1,6 +1,7 @@
 import { generateUser } from "../../data/mock-helper";
-import {registerUser} from "../../../src/services/users.service";
+import {getUserByEmail, registerUser} from "../../../src/services/users.service";
 import { IUser } from "../../../src/models/user.model";
+import { ERRORS } from "../../../src/lib/constants/labels";
 
 describe("User Service - registerUser", () => {
     it("should register a user with valid data", async () => {
@@ -24,12 +25,20 @@ describe("User Service - registerUser", () => {
 
     it("should throw an error for invalid user data", async () => {
         const invalidUserData = { first_name: "", last_name: "Doe", email: "", password: "12345" };
-        await expect(registerUser(invalidUserData as Omit<IUser, '_id'>)).rejects.toThrow("Missing required user fields");
+        await expect(registerUser(invalidUserData as Omit<IUser, '_id'>)).rejects.toThrow(ERRORS.MISSING_FIELDS);
     })
 
     it("should throw an error if user with the same email already exists", async () => {
         const userData = generateUser();
         await registerUser(userData as Omit<IUser, '_id'>);
-        await expect(registerUser(userData as Omit<IUser, '_id'>)).rejects.toThrow("User with this email already exists");
+        await expect(registerUser(userData as Omit<IUser, '_id'>)).rejects.toThrow(ERRORS.USER_EXISTS);
+    })
+
+    it("should find a user by email", async () => {
+        const userData = generateUser();
+        await registerUser(userData as Omit<IUser, '_id'>);
+        const foundUser = await getUserByEmail(userData.email);
+        expect(foundUser).toBeDefined();
+        expect(foundUser!.email).toBe(userData.email);
     })
 })
