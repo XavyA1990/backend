@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+let autoIncrement = 0;
+
 const taskSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, default: "" },
@@ -21,7 +23,17 @@ const taskSchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
+  color: { type: String, default: "#ffffff" },
+  order: { type: Number, default: function () { return ++autoIncrement; } },
   assignee: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+});
+
+taskSchema.pre("save", function (next) {
+  if (this.isNew) {
+    autoIncrement++;
+    this.order = autoIncrement;
+  }
+  next();
 });
 
 const Task = mongoose.model("Task", taskSchema);
