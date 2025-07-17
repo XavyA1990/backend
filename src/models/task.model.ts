@@ -16,8 +16,8 @@ const taskSchema = new mongoose.Schema({
     default: "medium",
   },
   dueDate: { type: Date, default: null },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",

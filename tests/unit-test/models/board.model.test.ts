@@ -1,28 +1,6 @@
-import { boardsMock } from "../../data/mocks/board.mock";
-import { usersMock } from "../../data/mocks/users.mock";
 import Board from "../../../src/models/board.model";
 import User from "../../../src/models/user.model";
-
-const generateUser = (overrides = {}) => {
-  const randomUser = usersMock[Math.floor(Math.random() * usersMock.length)];
-  return {
-    first_name: randomUser.first_name,
-    last_name: randomUser.last_name,
-    email: randomUser.email,
-    password: randomUser.password,
-    created_at: randomUser.created_at || new Date(),
-    avatar_image_url: randomUser.avatar_img_url || "",
-    ...overrides,
-  };
-};
-const generateBoard = (overrides = {}) => {
-  const randomBoard = boardsMock[Math.floor(Math.random() * boardsMock.length)];
-  return {
-    title: randomBoard.title,
-    description: randomBoard.description,
-    ...overrides,
-  };
-};
+import { generateUser, generateBoard } from "../../helpers/mock-helper";
 
 describe("Board Model", () => {
   it("should create a board with valid data", async () => {

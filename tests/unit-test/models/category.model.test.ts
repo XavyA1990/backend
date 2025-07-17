@@ -1,40 +1,7 @@
-import { usersMock } from "../../data/mocks/users.mock";
-import { categoriesMock } from "../../data/mocks/category.mock";
-import { boardsMock } from "../../data/mocks/board.mock";
 import Category from "../../../src/models/category.model";
 import Board from "../../../src/models/board.model";
 import User from "../../../src/models/user.model";
-
-const generateUser = (overrides = {}) => {
-  const randomUser = usersMock[Math.floor(Math.random() * usersMock.length)];
-  return {
-    first_name: randomUser.first_name,
-    last_name: randomUser.last_name,
-    email: randomUser.email,
-    password: randomUser.password,
-    created_at: randomUser.created_at || new Date(),
-    avatar_image_url: randomUser.avatar_img_url || "",
-    ...overrides,
-  };
-};
-const generateBoard = (overrides = {}) => {
-  const randomBoard = boardsMock[Math.floor(Math.random() * boardsMock.length)];
-  return {
-    title: randomBoard.title,
-    description: randomBoard.description,
-    ...overrides,
-  };
-};
-
-const generateCategory = (overrides = {}) => {
-  const randomCategory =
-    categoriesMock[Math.floor(Math.random() * categoriesMock.length)];
-  return {
-    name: randomCategory.name,
-    description: randomCategory.description,
-    ...overrides,
-  };
-};
+import { generateUser, generateBoard, generateCategory } from "../../helpers/mock-helper";
 
 describe("Category Model", () => {
   it("should create a category with valid data", async () => {
@@ -49,8 +16,8 @@ describe("Category Model", () => {
     expect(category.description).toBeDefined();
     expect(category.board.toString()).toBe(board._id.toString());
     expect(category.order).toBeDefined();
-    expect(category.createdAt).toBeDefined();
-    expect(category.updatedAt).toBeDefined();
+    expect(category.created_at).toBeDefined();
+    expect(category.updated_at).toBeDefined();
   });
 
   it("should not create a category without required fields", async () => {

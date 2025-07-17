@@ -1,18 +1,5 @@
-import { usersMock } from "../../data/mocks/users.mock";
 import User from "../../../src/models/user.model";
-
-const generateUser = (overrides = {}) => {
-  const randomUser = usersMock[Math.floor(Math.random() * usersMock.length)];
-  return {
-    first_name: randomUser.first_name,
-    last_name: randomUser.last_name,
-    email: randomUser.email,
-    password: randomUser.password,
-    created_at: randomUser.created_at || new Date(),
-    avatar_image_url: randomUser.avatar_img_url || "",
-    ...overrides,
-  };
-};
+import { generateUser } from "../../helpers/mock-helper";
 
 describe("User Model", () => {
   it("should create a user with valid data", async () => {
@@ -25,7 +12,7 @@ describe("User Model", () => {
     expect(savedUser.last_name).toBe(userData.last_name);
     expect(savedUser.email).toBe(userData.email);
     expect(savedUser.password).toBe(userData.password);
-    expect(savedUser.createdAt).toEqual(expect.any(Date));
+    expect(savedUser.created_at).toEqual(expect.any(Date));
     expect(savedUser.avatar_image_url).toBe(userData.avatar_image_url);
   });
 
