@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const boardSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, default: "" },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });

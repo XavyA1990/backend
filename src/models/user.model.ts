@@ -1,9 +1,15 @@
+import { match } from "assert";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address"],
+  },
   password: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   avatar_image_url: { type: String, default: "" },
