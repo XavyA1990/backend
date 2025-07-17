@@ -1,5 +1,5 @@
 import User from "../../../src/models/user.model";
-import { generateUser } from "../../helpers/mock-helper";
+import { generateUser } from "../../data/mock-helper";
 
 describe("User Model", () => {
   it("should create a user with valid data", async () => {

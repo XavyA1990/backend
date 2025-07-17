@@ -19,7 +19,7 @@ afterEach(async () => {
   }
 });
 
-afterAll(() => {
-  mongoose.disconnect();
-  mongoServer.stop();
+afterAll(async () => {
+  await mongoose.disconnect();
+  await mongoServer.stop();
 });

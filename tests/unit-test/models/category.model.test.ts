@@ -1,7 +1,7 @@
 import Category from "../../../src/models/category.model";
 import Board from "../../../src/models/board.model";
 import User from "../../../src/models/user.model";
-import { generateUser, generateBoard, generateCategory } from "../../helpers/mock-helper";
+import { generateUser, generateBoard, generateCategory } from "../../data/mock-helper";
 
 describe("Category Model", () => {
   it("should create a category with valid data", async () => {

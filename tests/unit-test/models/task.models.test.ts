@@ -2,7 +2,7 @@ import Category from "../../../src/models/category.model";
 import Board from "../../../src/models/board.model";
 import User from "../../../src/models/user.model";
 import Task from "../../../src/models/task.model";
-import { generateUser, generateBoard, generateCategory, generateTask } from "../../helpers/mock-helper";
+import { generateUser, generateBoard, generateCategory, generateTask } from "../../data/mock-helper";
 
 describe("Task Model", () => {
   it("should create a task with valid data", async () => {

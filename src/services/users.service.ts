@@ -1,4 +1,4 @@
-import isValidUserData from "../lib/validators/users/register-user.validator";
+import isValidUserData from "../lib/validators/users/register.validator";
 import User, { IUser } from "../models/user.model";
 import { BcryptAdapterImpl } from "../config/plugins/bcrypt.plugin";
 import { JwtAdapterImpl } from "../config/plugins/jwt.plugin";

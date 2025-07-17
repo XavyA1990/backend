@@ -1,4 +1,4 @@
-import { generateUser } from "../../helpers/mock-helper";
+import { generateUser } from "../../data/mock-helper";
 import {registerUser} from "../../../src/services/users.service";
 import { IUser } from "../../../src/models/user.model";
 
@@ -20,5 +20,10 @@ describe("User Service - registerUser", () => {
         const result = await registerUser(userData as Omit<IUser, '_id'>);
         expect(result.data.user.password).not.toBe(userData.password);
         expect(result.data.user.password).toMatch(/^\$2[ayb]\$.{56}$/);
+    })
+
+    it("should throw an error for invalid user data", async () => {
+        const invalidUserData = { first_name: "", last_name: "Doe", email: "", password: "12345" };
+        await expect(registerUser(invalidUserData as Omit<IUser, '_id'>)).rejects.toThrow("Missing required user fields");
     })
 })

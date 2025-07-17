@@ -1,6 +1,6 @@
 import Board from "../../../src/models/board.model";
 import User from "../../../src/models/user.model";
-import { generateUser, generateBoard } from "../../helpers/mock-helper";
+import { generateUser, generateBoard } from "../../data/mock-helper";
 
 describe("Board Model", () => {
   it("should create a board with valid data", async () => {
