@@ -1,4 +1,4 @@
-import isValidUserData from "../lib/validators/users/register.validator";
+import userValidation from "../lib/validators/users/register.validator";
 import User, { IUser } from "../models/user.model";
 import { BcryptAdapterImpl } from "../config/plugins/bcrypt.plugin";
 import { JwtAdapterImpl } from "../config/plugins/jwt.plugin";
@@ -6,9 +6,13 @@ import { ENVS } from "../config/envs";
 
 export const registerUser = async (userData: Omit<IUser, "_id">) => {
   try {
-    isValidUserData(userData);
+    const validUser = userValidation(userData);
 
-    const { password, ...rest } = userData;
+    if (await getUserByEmail(validUser.email)) {
+      throw new Error("User with this email already exists");
+    }
+
+    const { password, ...rest } = validUser;
 
     const bcryptAdapter = new BcryptAdapterImpl();
 
@@ -25,5 +29,17 @@ export const registerUser = async (userData: Omit<IUser, "_id">) => {
       throw new Error(error.message);
     }
     throw new Error("Error registering user");
+  }
+};
+
+export const getUserByEmail = async (email: string) => {
+  try {
+    const user = await User.findOne({ email }).exec();
+    return user;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error("Error fetching user by email");
   }
 };

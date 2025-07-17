@@ -26,4 +26,10 @@ describe("User Service - registerUser", () => {
         const invalidUserData = { first_name: "", last_name: "Doe", email: "", password: "12345" };
         await expect(registerUser(invalidUserData as Omit<IUser, '_id'>)).rejects.toThrow("Missing required user fields");
     })
+
+    it("should throw an error if user with the same email already exists", async () => {
+        const userData = generateUser();
+        await registerUser(userData as Omit<IUser, '_id'>);
+        await expect(registerUser(userData as Omit<IUser, '_id'>)).rejects.toThrow("User with this email already exists");
+    })
 })

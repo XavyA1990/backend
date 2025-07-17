@@ -2,7 +2,7 @@
 import { IUser } from "../../../models/user.model";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../constants/regex";
 
-const isValidUserData = (userData: Omit<IUser, "_id">) => {
+const userValidation = (userData: Omit<IUser, "_id">) => {
     const { first_name, email, password, last_name } = userData;
     if (!first_name || !email || !password || !last_name) {
         throw new Error("Missing required user fields");
@@ -16,7 +16,7 @@ const isValidUserData = (userData: Omit<IUser, "_id">) => {
         throw new Error("Invalid password format");
     }
 
-    return true;
+    return userData;
 }
 
-export default isValidUserData;
+export default userValidation;
