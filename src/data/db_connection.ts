@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import { ENVS } from "../config/envs";
-import { useLogger } from "../config/plugins/logger";
+import { useLogger } from "../config/plugins/logger.plugin";
 
 mongoose
   .connect(ENVS.MONGO_URI)

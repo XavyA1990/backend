@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { useLogger } from "../config/plugins/logger";
+import { useLogger } from "../config/plugins/logger.plugin";
 
 export const loggerMiddleware = (
   req: Request,
