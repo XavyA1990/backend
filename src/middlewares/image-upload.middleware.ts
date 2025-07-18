@@ -10,8 +10,7 @@ const uploadDir = path.join(
   "public",
   "uploads",
   "images",
-  "users",
-  `${new Date().getFullYear()}_${new Date().getMonth() + 1}_${new Date().getDate()}`
+  "users"
 );
 
 if (!fs.existsSync(uploadDir)) {
