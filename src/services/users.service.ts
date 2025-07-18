@@ -9,6 +9,7 @@ import { Types } from "mongoose";
 import { updateValidation } from "../lib/validators/users/update.validator";
 import fs from "fs";
 import path from "path";
+import { FileUploadPlugin } from "../config/plugins/file-uploads.plugin";
 
 export const registerUser = async (userData: Omit<IUser, "_id">) => {
   try {
@@ -104,17 +105,7 @@ export const updateUser = async (
     const user = await getUserById(id);
 
     if (user.avatar_image_url && validUserData.avatar_image_url) {
-      const oldAvatarPath = path.join(
-        __dirname,
-        "..",
-        "..",
-        "public",
-        user.avatar_image_url
-      );
-
-      if (fs.existsSync(oldAvatarPath)) {
-        fs.rmSync(oldAvatarPath);
-      }
+      new FileUploadPlugin("public/" + user.avatar_image_url).removeFile();
     }
 
     if (!user) throw new Error(ERRORS.USER_NOT_FOUND);
