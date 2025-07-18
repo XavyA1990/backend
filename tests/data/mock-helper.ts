@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { PASSWORD_REGEX } from "../../src/lib/constants/regex";
+import { Types } from "mongoose";
 
 export const generateUser = (overrides = {}) => {
   return {
@@ -44,4 +45,8 @@ export const generateTask = (overrides = {}) => {
     due_date: faker.date.future(),
     ...overrides,
   };
+};
+
+export const generateMongoId = () => {
+  return new Types.ObjectId()
 };

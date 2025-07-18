@@ -6,6 +6,7 @@ import { ENVS } from "../config/envs";
 import { ERRORS } from "../lib/constants/labels";
 import { loginValidation } from "../lib/validators/users/login.validator";
 import { Types } from "mongoose";
+import { updateValidation } from "../lib/validators/users/update.validator";
 
 export const registerUser = async (userData: Omit<IUser, "_id">) => {
   try {
@@ -87,5 +88,44 @@ export const loginUser = async (email: string, password: string) => {
       throw new Error(error.message);
     }
     throw new Error(ERRORS.ERROR_FETCHING_USER);
+  }
+};
+
+export const updateUser = async (
+  id: Types.ObjectId,
+  userData: Partial<IUser>,
+  confirmPassword?: string
+) => {
+  try {
+    const validUserData = updateValidation(userData, id, confirmPassword);
+
+    const user = await getUserById(id);
+
+    if (!user) throw new Error(ERRORS.USER_NOT_FOUND);
+
+    if (validUserData.password) {
+      const bcryptAdapter = new BcryptAdapterImpl();
+      validUserData.password = await bcryptAdapter.hash(validUserData.password);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(user._id, validUserData, {
+      runValidators: true,
+      new: true,
+    }).exec();
+
+    if (!updatedUser) throw new Error(ERRORS.ERROR_UPDATING_USER);
+
+    const jwtAdapter = new JwtAdapterImpl(ENVS.JWT_SECRET);
+    const token = jwtAdapter.sign({
+      id: updatedUser!._id,
+      email: updatedUser!.email,
+    });
+
+    return { data: updatedUser, token };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error(ERRORS.ERROR_UPDATING_USER);
   }
 };

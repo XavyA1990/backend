@@ -48,6 +48,7 @@ describe("POST /api/v1/users/login", () => {
         }),
         token: expect.any(String),
       },
+      message: SUCCESS.USER_LOGGED_IN,
     });
   });
 
@@ -73,6 +74,92 @@ describe("POST /api/v1/users/login", () => {
     expect(response.status).toBe(401);
     expect(response.body).toEqual({
       error: ERRORS.INCORRECT_CREDENTIALS,
+    });
+  });
+});
+
+describe("POST /api/v1/users/update/:id", () => {
+  it("should update a user's information", async () => {
+    const userData = generateUser();
+    const registerResponse = await request(app)
+      .post("/api/v1/users/register")
+      .send(userData);
+    const userId = registerResponse.body.data.user._id;
+    const updatedData = {
+      first_name: generateUser().first_name,
+      last_name: generateUser().last_name,
+    };
+    const response = await request(app)
+      .put(`/api/v1/users/update/${userId}`)
+      .send(updatedData);
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        user: expect.objectContaining({
+          first_name: updatedData.first_name,
+          last_name: updatedData.last_name,
+          email: userData.email,
+        }),
+      },
+      message: SUCCESS.USER_UPDATED,
+    });
+  });
+
+  it("should return an error for invalid user id", async () => {
+    const userData = generateUser();
+    const response = await request(app)
+      .put("/api/v1/users/update/invalidId")
+      .send(userData);
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      error: ERRORS.INVALID_USER_ID,
+    });
+  });
+
+  it("should be able to update user with missing fields", async () => {
+    const userData = generateUser();
+    const registerResponse = await request(app)
+      .post("/api/v1/users/register")
+      .send(userData);
+    const userId = registerResponse.body.data.user._id;
+    const new_data = {
+      first_name: generateUser().first_name,
+      last_name: generateUser().last_name,
+    };
+    const response = await request(app)
+      .put(`/api/v1/users/update/${userId}`)
+      .send(new_data);
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        user: expect.objectContaining({
+          first_name: new_data.first_name,
+          last_name: new_data.last_name,
+          email: userData.email,
+        }),
+      },
+      message: SUCCESS.USER_UPDATED,
+    });
+  });
+
+  it("should be able to update password with confirm_password", async () => {
+    const userData = generateUser();
+    const registerResponse = await request(app)
+      .post("/api/v1/users/register")
+      .send(userData);
+    const userId = registerResponse.body.data.user._id;
+    const newPassword = generateUser().password;
+    const response = await request(app)
+      .put(`/api/v1/users/update/${userId}`)
+      .send({ password: newPassword, confirm_password: newPassword });
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        user: expect.objectContaining({
+          email: userData.email,
+        }),
+      },
+      message: SUCCESS.USER_UPDATED,
     });
   });
 });
