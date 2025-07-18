@@ -11,3 +11,5 @@ yarn.lock
 npm-debug.log*
 .pnpm-debug.log*
 .vscode/
+
+public/uploads/

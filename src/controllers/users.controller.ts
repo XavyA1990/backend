@@ -8,7 +8,9 @@ import { handleStatusCode } from "../lib/helpers/status-code.helper";
 const register = (req: Request, res: Response) => {
   const userData = req.body as Omit<IUser, "_id">;
 
-  registerUser(userData)
+  const avatarImagePublicPath = req.file?.path.split("public")[1];
+
+  registerUser({ ...userData, avatar_image_url: avatarImagePublicPath })
     .then((result) => {
       useLogger(
         `User registered successfully: ${result.data.user.email}`,

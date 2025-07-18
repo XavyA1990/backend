@@ -5,6 +5,7 @@ import compression from "compression";
 import cors from "cors";
 import helmet from "helmet";
 import usersRoute from "../routes/users.route";
+import path from "path";
 
 const app = express();
 // Middleware setup
@@ -17,6 +18,8 @@ app.use(cors({
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/", express.static(path.join(__dirname, "..", "..", "public")));
 
 // Routes setup
 app.use("/health", healthRoute);
