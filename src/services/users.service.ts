@@ -5,6 +5,7 @@ import { JwtAdapterImpl } from "../config/plugins/jwt.plugin";
 import { ENVS } from "../config/envs";
 import { ERRORS } from "../lib/constants/labels";
 import { loginValidation } from "../lib/validators/users/login.validator";
+import { Types } from "mongoose";
 
 export const registerUser = async (userData: Omit<IUser, "_id">) => {
   try {
@@ -46,6 +47,19 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 
+export const getUserById = async (id: Types.ObjectId) => {
+  try {
+    const user = await User.findById(id).exec();
+    if (!user) throw new Error(ERRORS.USER_NOT_FOUND);
+    return user;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error(ERRORS.ERROR_FETCHING_USER);
+  }
+};
+
 export const loginUser = async (email: string, password: string) => {
   try {
     const validUser = loginValidation(email, password);
@@ -63,7 +77,10 @@ export const loginUser = async (email: string, password: string) => {
     if (!isPasswordValid) throw new Error(ERRORS.INCORRECT_CREDENTIALS);
 
     const jwtAdapter = new JwtAdapterImpl(ENVS.JWT_SECRET);
-    const token = jwtAdapter.sign({ id: existingUser._id, email: existingUser.email });
+    const token = jwtAdapter.sign({
+      id: existingUser._id,
+      email: existingUser.email,
+    });
     return { data: { user: existingUser, token } };
   } catch (error) {
     if (error instanceof Error) {

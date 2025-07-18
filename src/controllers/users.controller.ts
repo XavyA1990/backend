@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "../models/user.model";
+import { IUser, parserUser } from "../models/user.model";
 import { loginUser, registerUser } from "../services/users.service";
 import { SUCCESS } from "../lib/constants/labels";
 import { useLogger } from "../config/plugins/logger.plugin";
@@ -12,13 +12,14 @@ const register = (req: Request, res: Response) => {
 
   registerUser({ ...userData, avatar_image_url: avatarImagePublicPath })
     .then((result) => {
-      useLogger(
-        `User registered successfully: ${result.data.user.email}`,
-        "info"
-      );
+      const { user, token } = result.data;
+      useLogger(`User registered successfully: ${user.email}`, "info");
       res
         .status(handleStatusCode(SUCCESS.USER_REGISTERED))
-        .json({ data: result.data, message: SUCCESS.USER_REGISTERED });
+        .json({
+          data: { user: parserUser(user), token },
+          message: SUCCESS.USER_REGISTERED,
+        });
     })
     .catch((error) => {
       if (error instanceof Error) {
@@ -39,11 +40,9 @@ const login = (req: Request, res: Response) => {
 
   loginUser(email, password)
     .then((result) => {
-      useLogger(
-        `User logged in successfully: ${result.data.user.email}`,
-        "info"
-      );
-      res.status(200).json({ data: result.data });
+      const { user, token } = result.data;
+      useLogger(`User logged in successfully: ${user.email}`, "info");
+      res.status(200).json({ data: { user: parserUser(user), token } });
     })
     .catch((error) => {
       if (error instanceof Error) {

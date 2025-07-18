@@ -1,7 +1,8 @@
 import { generateUser } from "../../data/mock-helper";
-import {getUserByEmail, loginUser, registerUser} from "../../../src/services/users.service";
+import {getUserByEmail, getUserById, loginUser, registerUser} from "../../../src/services/users.service";
 import { IUser } from "../../../src/models/user.model";
 import { ERRORS } from "../../../src/lib/constants/labels";
+import { Types } from "mongoose";
 
 describe("User Service - registerUser", () => {
     it("should register a user with valid data", async () => {
@@ -64,4 +65,20 @@ describe("User Service - loginUser", () => {
         await registerUser(userData as Omit<IUser, '_id'>);
         await expect(loginUser(userData.email, "wrongpassword")).rejects.toThrow(ERRORS.INVALID_PASSWORD);
     })
+});
+
+describe("User Service - getUserById", () => {
+    it("should return a user for a valid id", async () => {
+        const userData = generateUser();
+        const registerResult = await registerUser(userData as Omit<IUser, '_id'>);
+        const userId = registerResult.data.user._id;
+
+        const foundUser = await getUserById(userId);
+        expect(foundUser).toBeDefined();
+        expect(foundUser.email).toBe(userData.email);
+    });
+
+    it("should throw an error for an invalid id", async () => {
+        await expect(getUserById(new Types.ObjectId())).rejects.toThrow(ERRORS.USER_NOT_FOUND);
+    });
 });
