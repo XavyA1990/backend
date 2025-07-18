@@ -7,6 +7,8 @@ import { ERRORS } from "../lib/constants/labels";
 import { loginValidation } from "../lib/validators/users/login.validator";
 import { Types } from "mongoose";
 import { updateValidation } from "../lib/validators/users/update.validator";
+import fs from "fs";
+import path from "path";
 
 export const registerUser = async (userData: Omit<IUser, "_id">) => {
   try {
@@ -100,6 +102,20 @@ export const updateUser = async (
     const validUserData = updateValidation(userData, id, confirmPassword);
 
     const user = await getUserById(id);
+
+    if (user.avatar_image_url && validUserData.avatar_image_url) {
+      const oldAvatarPath = path.join(
+        __dirname,
+        "..",
+        "..",
+        "public",
+        user.avatar_image_url
+      );
+
+      if (fs.existsSync(oldAvatarPath)) {
+        fs.rmSync(oldAvatarPath);
+      }
+    }
 
     if (!user) throw new Error(ERRORS.USER_NOT_FOUND);
 

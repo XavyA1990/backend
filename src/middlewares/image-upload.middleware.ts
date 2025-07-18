@@ -24,10 +24,11 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const uniqueSuffix = generateUUID();
     const fileExtension = path.extname(file.originalname);
-    const fileName = `${path.basename(
-      file.originalname,
-      fileExtension
-    )}-${uniqueSuffix}${fileExtension}`;
+    const sanitizedBaseName = path
+      .basename(file.originalname, fileExtension)
+      .replace(/\s+/g, "_")
+      .toLowerCase();
+    const fileName = `${sanitizedBaseName}-${uniqueSuffix}${fileExtension}`;
     cb(null, fileName);
   },
 });
