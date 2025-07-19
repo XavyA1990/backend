@@ -1,4 +1,4 @@
-import { generateUser } from "../../data/mock-helper";
+import { generateMongoId, generateUser } from "../../data/mock-helper";
 import {
   getUserByEmail,
   getUserById,
@@ -8,7 +8,6 @@ import {
 } from "../../../src/services/users.service";
 import { IUser } from "../../../src/models/user.model";
 import { ERRORS } from "../../../src/lib/constants/labels/labels";
-import { Types } from "mongoose";
 
 describe("User Service - registerUser", () => {
   it("should register a user with valid data", async () => {
@@ -98,7 +97,7 @@ describe("User Service - getUserById", () => {
   });
 
   it("should throw an error for an invalid id", async () => {
-    await expect(getUserById(new Types.ObjectId())).rejects.toThrow(
+    await expect(getUserById(generateMongoId())).rejects.toThrow(
       ERRORS.USER_NOT_FOUND
     );
   });
@@ -121,7 +120,7 @@ describe("User Service - updateUser", () => {
   });
 
   it("should throw an error for an invalid user id", async () => {
-    await expect(updateUser(new Types.ObjectId(), {})).rejects.toThrow(
+    await expect(updateUser(generateMongoId(), {})).rejects.toThrow(
       ERRORS.USER_NOT_FOUND
     );
   });
