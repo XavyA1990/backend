@@ -3,12 +3,10 @@ import User, { IUser } from "../models/user.model";
 import { BcryptAdapterImpl } from "../config/plugins/bcrypt.plugin";
 import { JwtAdapterImpl } from "../config/plugins/jwt.plugin";
 import { ENVS } from "../config/envs";
-import { ERRORS } from "../lib/constants/labels";
+import { ERRORS } from "../lib/constants/labels/labels";
 import { loginValidation } from "../lib/validators/users/login.validator";
 import { Types } from "mongoose";
 import { updateValidation } from "../lib/validators/users/update.validator";
-import fs from "fs";
-import path from "path";
 import { FileUploadPlugin } from "../config/plugins/file-uploads.plugin";
 
 export const registerUser = async (userData: Omit<IUser, "_id">) => {

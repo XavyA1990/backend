@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { PASSWORD_REGEX } from "../../src/lib/constants/regex";
 import { Types } from "mongoose";
+import { registerUser } from "../../src/services/users.service";
+import { IUser } from "../../src/models/user.model";
 
 export const generateUser = (overrides = {}) => {
   return {
@@ -16,6 +17,8 @@ export const generateBoard = (overrides = {}) => {
   return {
     title: faker.lorem.sentence(),
     description: faker.lorem.paragraph(),
+    owner: new Types.ObjectId(),
+    members: [new Types.ObjectId()],
     ...overrides,
   };
 };
@@ -50,3 +53,10 @@ export const generateTask = (overrides = {}) => {
 export const generateMongoId = () => {
   return new Types.ObjectId()
 };
+
+export const createUser = async () => {
+  const response = await registerUser(generateUser() as Omit<IUser, "_id">);
+
+  const { user } = response.data;
+  return user;
+}

@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { IUser } from "../../../models/user.model";
-import { ERRORS } from "../../constants/labels";
+import { ERRORS } from "../../constants/labels/labels";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../constants/regex";
 
 export const updateValidation = (

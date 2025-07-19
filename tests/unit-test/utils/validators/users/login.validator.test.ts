@@ -1,7 +1,6 @@
 import { generateUser } from "../../../../data/mock-helper";
 import { loginValidation } from '../../../../../src/lib/validators/users/login.validator';
-import { ERRORS } from "../../../../../src/lib/constants/labels";
-
+import { ERRORS } from "../../../../../src/lib/constants/labels/labels";
 describe("login validator", () => {
     it("should validate a user login with valid data", () => {
         const userData = generateUser();

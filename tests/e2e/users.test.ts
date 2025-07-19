@@ -1,4 +1,4 @@
-import { ERRORS, SUCCESS } from "../../src/lib/constants/labels";
+import { ERRORS, SUCCESS } from "../../src/lib/constants/labels/labels";
 import request from "supertest";
 import app from "../../src/app/app";
 import { generateUser } from "../data/mock-helper";

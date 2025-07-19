@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IUser, parserUser } from "../models/user.model";
 import { loginUser, registerUser, updateUser } from "../services/users.service";
-import { SUCCESS } from "../lib/constants/labels";
+import { SUCCESS } from "../lib/constants/labels/labels";
 import { useLogger } from "../config/plugins/logger.plugin";
 import { handleStatusCode } from "../lib/helpers/status-code.helper";
 import { Types } from "mongoose";

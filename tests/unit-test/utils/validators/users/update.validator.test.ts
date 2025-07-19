@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ERRORS } from "../../../../../src/lib/constants/labels";
+import { ERRORS } from "../../../../../src/lib/constants/labels/labels";
 import { updateValidation } from "../../../../../src/lib/validators/users/update.validator";
 import { generateMongoId, generateUser } from "../../../../data/mock-helper";
 

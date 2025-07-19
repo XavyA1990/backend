@@ -7,7 +7,7 @@ import {
   updateUser,
 } from "../../../src/services/users.service";
 import { IUser } from "../../../src/models/user.model";
-import { ERRORS } from "../../../src/lib/constants/labels";
+import { ERRORS } from "../../../src/lib/constants/labels/labels";
 import { Types } from "mongoose";
 
 describe("User Service - registerUser", () => {

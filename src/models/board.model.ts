@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const boardSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -8,6 +8,15 @@ const boardSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
+
+export interface IBoard extends mongoose.Document {
+  title: string;
+  description: string;
+  created_at: Date;
+  updated_at: Date;
+  owner: Types.ObjectId;
+  members: Types.ObjectId[];
+}
 
 boardSchema.pre("validate", function (next) {
   const board = this as any;

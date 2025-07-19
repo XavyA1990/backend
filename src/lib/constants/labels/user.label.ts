@@ -1,4 +1,4 @@
-export const ERRORS = {
+export const USER_ERRORS = {
     INVALID_EMAIL: "Invalid email format",
     INVALID_PASSWORD: "Invalid password format",
     PASSWORD_DOES_NOT_MATCH: "Passwords do not match",
@@ -12,7 +12,7 @@ export const ERRORS = {
     INVALID_USER_ID: "Invalid user ID",
 };
 
-export const SUCCESS = {
+export const USER_SUCCESS = {
     USER_REGISTERED: "User registered successfully",
     USER_UPDATED: "User updated successfully",
     USER_LOGGED_IN: "User logged in successfully",

@@ -1,4 +1,4 @@
-import { ERRORS } from "../../constants/labels";
+import { ERRORS } from "../../constants/labels/labels";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../constants/regex";
 
 export const loginValidation = (email: string, password: string) => {

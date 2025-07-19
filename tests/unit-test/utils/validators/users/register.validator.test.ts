@@ -1,7 +1,7 @@
 import { generateUser } from "../../../../data/mock-helper";
 import { IUser } from "../../../../../src/models/user.model";
 import { registerValidation } from "../../../../../src/lib/validators/users/register.validator";
-import { ERRORS } from "../../../../../src/lib/constants/labels";
+import { ERRORS } from "../../../../../src/lib/constants/labels/labels";
 
 describe("Register User Validator", () => {
   it("should  validate a user registration with valid data", async () => {

@@ -1,4 +1,4 @@
-import { SUCCESS, ERRORS } from "../constants/labels"
+import { SUCCESS, ERRORS } from "../constants/labels/labels"
 
 
 export const handleStatusCode = (message: string) => {
