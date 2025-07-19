@@ -53,10 +53,3 @@ export const generateTask = (overrides = {}) => {
 export const generateMongoId = () => {
   return new Types.ObjectId()
 };
-
-export const createUser = async () => {
-  const response = await registerUser(generateUser() as Omit<IUser, "_id">);
-
-  const { user } = response.data;
-  return user;
-}
